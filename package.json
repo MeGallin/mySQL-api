@@ -1,0 +1,11 @@
+{
+  "name": "mysql-api",
+  "version": "1.0.0",
+  "description": "Node api for mySql db",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gary Allin",
+  "license": "ISC"
+}

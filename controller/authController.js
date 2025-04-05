@@ -36,9 +36,11 @@ const register = async (req, res, next) => {
     // Set refresh token in HTTP-only cookie
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: false, // Set to false for development
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/',
+      domain: 'localhost',
     });
 
     // Return user data and access token
@@ -89,9 +91,11 @@ const login = async (req, res, next) => {
     // Set refresh token in HTTP-only cookie
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: false, // Set to false for development
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/',
+      domain: 'localhost',
     });
 
     // Return user data and access token
@@ -124,9 +128,11 @@ const refresh = async (req, res, next) => {
     // Set new refresh token in HTTP-only cookie
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: false, // Set to false for development
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/',
+      domain: 'localhost',
     });
 
     // Return new access token
@@ -149,7 +155,13 @@ const logout = async (req, res, next) => {
     await user.update({ refreshToken: null });
 
     // Clear refresh token cookie
-    res.clearCookie('refreshToken');
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: false, // Set to false for development
+      sameSite: 'lax',
+      path: '/',
+      domain: 'localhost',
+    });
 
     res.json({
       status: 'success',

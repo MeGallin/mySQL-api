@@ -27,25 +27,22 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS configuration
-app.use((req, res, next) => {
-  const origin = req.headers.origin || 'http://localhost:5173';
-
-  res.header('Access-Control-Allow-Origin', origin);
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header(
-    'Access-Control-Allow-Methods',
-    'GET, PUT, POST, DELETE, OPTIONS, HEAD',
-  );
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-XSRF-TOKEN',
-  );
-  res.header('Access-Control-Expose-Headers', 'Set-Cookie, Authorization');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: [
+      'Origin',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'Authorization',
+      'X-XSRF-TOKEN',
+    ],
+    exposedHeaders: ['Set-Cookie', 'Authorization'],
+  }),
+);
 
 // Middleware
 app.use(express.json());
